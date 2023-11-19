@@ -21,13 +21,15 @@ class PluginLoader(object):
             except ModuleNotFoundError as e:
                 # TODO: Logging
                 print(e)
+        print(loaded_modules)
         return loaded_modules
 
     def load_plugins(self) -> Dict[str, Plugin]:
         loaded_plugins = {}
         for module in self._load_modules():
             for name, cls in inspect.getmembers(module, lambda x: inspect.isclass(x)):
-                if issubclass(Plugin, cls):
+                if issubclass(cls, Plugin) and cls is not Plugin:
+                    print(f"Found plugin {name} at {cls}")
                     if name in loaded_plugins:
                         raise NameError(f"Duplicate plugin name: {name}")
                     loaded_plugins[name] = cls(self._config)

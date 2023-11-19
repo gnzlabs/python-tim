@@ -25,6 +25,8 @@ class FileSystem(Plugin):
         return return_value
 
     def handle(self, directive: str, *args, **kwargs) -> dict:
+        response = {"error": f"Unsupported directive: {directive}"}        
         kwargs["path"] = pathlib.Path(kwargs.get("path", ".")).absolute()
         if hasattr(self, f"_{directive}"):
-            getattr(self, f"_{directive}")(**kwargs)
+            response = getattr(self, f"_{directive}")(**kwargs)            
+        return response
