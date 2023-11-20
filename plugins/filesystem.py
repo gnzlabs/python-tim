@@ -6,14 +6,14 @@ from ._base import Plugin
 
 class FileSystem(Plugin):
 
-    def _chdir(self, path) -> dict:
+    def _cmd_chdir(self, path) -> dict:
         os.chdir(path)
         return self._getcwd()
 
-    def _getcwd(self, **kwargs) -> dict:
+    def _cmd_getcwd(self, **kwargs) -> dict:
         return {"current_directory": os.getcwd()}
     
-    def _listdir(self, path, pattern="*") -> dict:
+    def _cmd_listdir(self, path, pattern="*") -> dict:
         return_value = {
             "path": str(path),
             "files": [],
@@ -25,8 +25,5 @@ class FileSystem(Plugin):
         return return_value
 
     def handle(self, directive: str, *args, **kwargs) -> dict:
-        response = {"error": f"Unsupported directive: {directive}"}        
         kwargs["path"] = pathlib.Path(kwargs.get("path", ".")).absolute()
-        if hasattr(self, f"_{directive}"):
-            response = getattr(self, f"_{directive}")(**kwargs)            
-        return response
+        return super().handle(directive, *args, **kwargs)

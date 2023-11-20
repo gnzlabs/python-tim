@@ -8,4 +8,7 @@ class Plugin(object):
         return
 
     def handle(self, directive: str, *args, **kwargs) -> dict:
-        raise NotImplementedError()
+        response = {"error": f"Unsupported directive: {directive}"}        
+        if hasattr(self, f"_cmd_{directive}"):
+            response = getattr(self, f"_cmd_{directive}")(**kwargs)            
+        return response
