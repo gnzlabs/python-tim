@@ -1,7 +1,7 @@
 import os
 import pathlib
 
-from ._base import Plugin
+from .._base import Plugin
 
 
 class FileSystem(Plugin):
