@@ -22,10 +22,13 @@ class FileSystem(Plugin):
             "directories": []
         }
         for child in path.glob(pattern):
-            fs_type = "files" if child.is_file() else "directories"
+            fs_type = "directories"
             if child.is_file():
+                fs_type = "files"
                 child = get_file_info(child)
-            return_value[fs_type].append(str(child))
+            else :
+                child = str(child)
+            return_value[fs_type].append(child)
         return return_value
 
     def setup(self):
