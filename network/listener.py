@@ -31,6 +31,9 @@ class TimRequestHandler(socketserver.StreamRequestHandler):
         print(f"== Command =={os.linesep}{json.dumps(command, indent=4)}")
         if not command["arguments"]:
             command["arguments"] = {}
-        response = self.server.commands.handle(command["plugin"], command["directive"], **command["arguments"])
+        try:
+            response = self.server.commands.handle(command["plugin"], command["directive"], **command["arguments"])
+        except Exception as e:
+            response = {"error": str(e)}
         print(f"== Response =={os.linesep}{json.dumps(response, indent=4)}{os.linesep}====")
         self.wfile.write(self.pack_response(response))

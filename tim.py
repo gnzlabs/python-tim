@@ -12,7 +12,8 @@ if __name__ == "__main__":
     print("Welcome! Configuring Tim server...")
     loaded_config = Configuration(
         plugins=[
-            "filesystem"
+            "filesystem",
+            "divert"
         ]
     )
     loaded_plugins = PluginLoader(loaded_config).load_plugins()
